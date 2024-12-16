@@ -26,6 +26,6 @@ class Test extends Command
      */
     public function handle()
     {
-        dd(DataController::getData());
+        dd(DataController::getDataFromWebsiteServ());
     }
 }

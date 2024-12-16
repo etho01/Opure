@@ -11,3 +11,5 @@ Route::get('/', function () {
 Route::get('getText', [DataController::class, 'getText']);
 
 Route::get('getData', [DataController::class, 'getData']);
+
+Route::get('getHtml', [DataController::class, 'getHtml']);

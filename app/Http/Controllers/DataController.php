@@ -13,12 +13,12 @@ class DataController extends Controller
     {
         exec('curl -s -H "Range: bytes=-5040" https://storage.googleapis.com/mollusques-caen/data.csv', $list);
         $data = implode("\n", $list);
-        Storage::disk('public')->put('data.csv', $data);
+        Storage::disk('public')->put('cache.csv', $data);
     }
 
     public static function getData()
     {
-        $data = Storage::disk('public')->get('data.csv');
+        $data = Storage::disk('public')->get('cache.csv');
         $list = explode("\n", $data);
         $array = [];
         $sum = 0;
@@ -47,12 +47,10 @@ class DataController extends Controller
     public function getText()
     {
         $array = DataController::getData();
-
         if (count($array) == 0)
         {
             return Response('', 200);
         }
-        
         return response('La qualité de l\'eau est a ' . $array['last'] . "/5\n la moyenne de la semaine est " . $array['avg']);
     }
 }
