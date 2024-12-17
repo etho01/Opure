@@ -16,9 +16,18 @@ class DataController extends Controller
         Storage::disk('public')->put('cache.csv', $data);
     }
 
-    public static function getData()
+    public static function getData($isSubCall = false)
     {
         $data = Storage::disk('public')->get('cache.csv');
+        if ($data == null)
+        {
+            if (!$isSubCall)
+            {
+                static::getDataFromWebsiteServ();
+                return static::getData(true);
+            }
+        }
+        
         $list = explode("\n", $data);
         $array = [];
         $sum = 0;
