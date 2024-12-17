@@ -27,7 +27,7 @@ class DataController extends Controller
                 return static::getData(true);
             }
         }
-        
+
         $list = explode("\n", $data);
         $array = [];
         $sum = 0;
@@ -61,5 +61,27 @@ class DataController extends Controller
             return Response('', 200);
         }
         return response('La qualité de l\'eau est a ' . $array['last'] . "/5\n la moyenne de la semaine est " . $array['avg']);
+    }
+
+    public function show() 
+    {
+        if (Storage::disk('public')->get('killSwitch.txt') == "1")
+        {
+            return 'ks active';
+        }
+
+        return 'ks desactive';
+    }
+
+    public function enable()
+    {
+        Storage::disk('public')->put('killSwitch.txt', '1');
+        return redirect()->route('ks');
+    }
+
+    public function disable()
+    {
+        Storage::disk('public')->put('killSwitch.txt', '0');
+        return redirect()->route('ks');
     }
 }
