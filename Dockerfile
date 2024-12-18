@@ -1,10 +1,5 @@
 FROM php:8.2-apache
  
-ARG WWW_USER=1000
-
-RUN groupadd --force -g $WWW_USER webapp
-RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
- 
 # Set working directory
 WORKDIR /app
  
@@ -33,7 +28,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt-get install nodejs -y 
 RUN apt install npm -y
 
-ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV production
 COPY . .
 
@@ -63,4 +57,4 @@ RUN php artisan migrate --force
 RUN npm install
 RUN npm run build
 
-USER ${WWW_USER}
+RUN chown -R application:application .
