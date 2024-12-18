@@ -29,8 +29,8 @@ COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN apt-get install nodejs
-RUN apt install npm
+RUN apt-get install nodejs -y 
+RUN apt install npm -y
 
 ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV production
