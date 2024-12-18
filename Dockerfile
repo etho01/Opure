@@ -38,7 +38,9 @@ ENV APP_ENV production
 COPY . .
 
 COPY vhost.conf /etc/apache2/sites-available/000-default.conf
+RUN a2ensite 000-default.conf
 RUN a2enmod rewrite
+RUN systemctl restart apache2
 
 # On copie le fichier .env.example pour le renommer en .env
 # Vous pouvez modifier le .env.example pour indiquer la configuration de votre site pour la production
