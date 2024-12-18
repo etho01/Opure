@@ -1,4 +1,10 @@
 FROM php:8.2-apache
+
+ARG WWW_USER=1000
+ 
+# Create user
+RUN groupadd --force -g $WWW_USER webapp
+RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
  
 # Set working directory
 WORKDIR /app
@@ -57,11 +63,5 @@ RUN php artisan migrate --force
 # Compilation des assets de Breeze (ou de votre site)
 RUN npm install
 RUN npm run build
-
-ARG WWW_USER=1000
- 
-# Create user
-RUN groupadd --force -g $WWW_USER webapp
-RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
 
 RUN chown -R webapp:webapp .
