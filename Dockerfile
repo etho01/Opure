@@ -34,7 +34,6 @@ COPY . .
 COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 RUN a2ensite 000-default.conf
 RUN a2enmod rewrite
-RUN service apache2 restart
 
 # On copie le fichier .env.example pour le renommer en .env
 # Vous pouvez modifier le .env.example pour indiquer la configuration de votre site pour la production
@@ -55,7 +54,8 @@ RUN php artisan view:cache
 RUN php artisan migrate --force
 
 # Compilation des assets de Breeze (ou de votre site)
-
+RUN npm install
+RUN npm run build
 
 ARG WWW_USER=1000
  
@@ -63,4 +63,4 @@ ARG WWW_USER=1000
 RUN groupadd --force -g $WWW_USER webapp
 RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
 
-RUN chown -R webapp .
+RUN chown -R webapp:webapp .
