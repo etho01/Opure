@@ -57,4 +57,10 @@ RUN php artisan migrate --force
 RUN npm install
 RUN npm run build
 
-RUN chown -R application:application .
+ARG WWW_USER=1000
+ 
+# Create user
+RUN groupadd --force -g $WWW_USER webapp
+RUN useradd -ms /bin/bash --no-user-group -g $WWW_USER -u $WWW_USER webapp
+
+RUN chown -R webapp:webapp .
