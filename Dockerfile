@@ -63,3 +63,5 @@ RUN php artisan migrate --force
 # Compilation des assets de Breeze (ou de votre site)
 RUN npm install
 RUN npm run build
+
+chmod -R 777 /app
