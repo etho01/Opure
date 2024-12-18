@@ -60,7 +60,9 @@ class DataController extends Controller
         {
             return Response('', 200);
         }
-        return response('La qualité de l\'eau est a ' . $array['last'] . "/5\n la moyenne de la semaine est " . $array['avg']);
+        return response('La qualité de l\'eau est a ' . $array['last'] . "/5\n la moyenne de la semaine est " . $array['avg'], 200, [
+            'Cache-Control' => 'max-age=3600'
+        ]);
     }
 
     public function show() 
