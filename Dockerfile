@@ -65,3 +65,5 @@ RUN npm install
 RUN npm run build
 
 RUN chown -R webapp:webapp .
+
+USER ${WWW_USER}
