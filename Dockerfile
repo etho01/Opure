@@ -1,24 +1,34 @@
-FROM webdevops/php-nginx:8.3-alpine
+FROM php:8.2-apache
+ 
+ARG WWW_USER=1000
+ 
+# Set working directory
+WORKDIR /app
+ 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpq-dev \
+    libzip-dev \
+    libcurl4-openssl-dev \
+    zip \
+    unzip \
+    default-mysql-client
+ 
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip curl intl
 
-# Installation dans votre Image du minimum pour que Docker fonctionne
-RUN apk add oniguruma-dev libxml2-dev
-RUN docker-php-ext-install \
-        bcmath \
-        ctype \
-        fileinfo \
-        mbstring \
-        pdo_mysql \
-        xml 
-
-# Installation dans votre image de Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Installation dans votre image de NodeJS
-RUN apk add nodejs npm
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV production
-WORKDIR /app
 COPY . .
 
 # On copie le fichier .env.example pour le renommer en .env
